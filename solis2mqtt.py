@@ -88,6 +88,8 @@ class Solis2Mqtt:
             logging.debug("Recent clock update")
             return
 
+        self.last_clock_update = datetime.now()
+
         logging.debug(f"Reading clock registers from {clock_register}")
         inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
 
@@ -118,7 +120,7 @@ class Solis2Mqtt:
 
         inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
         logging.info(f"New inverter clock register values: {inverter_clock_values}")
-        self.last_clock_update = now
+        
 
 
     def subscribe(self):
