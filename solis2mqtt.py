@@ -25,6 +25,7 @@ class Solis2Mqtt:
         self.inverter_lock = Lock()
         self.inverter_offline = False
         self.mqtt = Mqtt(self.cfg['inverter']['name'], self.cfg['mqtt'])
+        self.last_clock_update = None
 
     def load_register_cfg(self, register_data_file='solis_modbus.yaml'):
         with open(register_data_file) as smfile:
@@ -74,6 +75,42 @@ class Solis2Mqtt:
                 else:
                     logging.error("Unknown homeassistant device type: "+entry['homeassistant']['device'])
 
+    def update_clock(self):
+        if not self.cfg["inverter"]["clock_register"]:
+            logging.debug("No clock register config")
+            return
+
+        # Only perform clock checks updates hourly
+        if self.last_clock_update and (datetime.now() - self.last_clock_update).total_seconds() < 60*60:
+            logging.debug("Recent clock update")
+            return
+
+        clock_register =int(self.cfg["inverter"]["clock_register"])
+        logging.debug(f"Reading clock registers from {clock_register}")
+        inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
+        inverter_clock = datetime.DateTime.new(*inverter_clock_values)
+
+        now = datetime.now()
+        delta_seconds = (now - inverter_clock).total_seconds()
+
+        if abs(delta_seconds) < 5:
+            logging.info(f"Inverter clock is accurate (delta={delta_seconds}s)")
+            return
+
+        logging.info(f"Inverter clock is out by {delta_seconds}s. Updating....  (now={now} inverter={inverter_clock})")
+
+        correct_values = [now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second()]
+        for offset in range(6):
+            self.inverter.write_register(
+                registeraddress=clock_register+offset, 
+                value=correct_values[offset],
+                functioncode=6)
+
+        inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
+        logging.info(f"New inverter clock register values: {inverter_clock_values}")
+        self.last_clock_update = now
+
+
     def subscribe(self):
         for entry in self.register_cfg:
             if 'write_function_code' in entry['modbus']:
@@ -119,6 +156,9 @@ class Solis2Mqtt:
         self.subscribe()
         while True:
             logging.debug("Inverter scan start at " + datetime.now().isoformat())
+
+            self.update_clock()
+
             for entry in self.register_cfg:
                 if not entry['active'] or 'function_code' not in entry['modbus'] :
                     continue

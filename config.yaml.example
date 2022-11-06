@@ -6,6 +6,7 @@ inverter:
     name: solis2mqtt
     manufacturer: Ginlong Technologies
     model:
+    clock_register: 43000
 mqtt:
     url: hassio.local
     port: 8883
