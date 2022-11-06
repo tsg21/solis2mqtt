@@ -109,7 +109,7 @@ class Solis2Mqtt:
 
         logging.info(f"Inverter clock is out by {delta_seconds}s. Updating....  (now={now} inverter={inverter_clock})")
 
-        correct_values = [now.year()-2000, now.month(), now.day(), now.hour(), now.minute(), now.second()]
+        correct_values = [now.year-2000, now.month, now.day, now.hour, now.minute, now.second]
         for offset in range(6):
             self.inverter.write_register(
                 registeraddress=clock_register+offset, 
