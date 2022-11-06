@@ -91,8 +91,8 @@ class Solis2Mqtt:
         logging.debug(f"Reading clock registers from {clock_register}")
         inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
 
-        if inverter_clock_values[0] < 10 or inverter_clock_values[0] > 100 or inverter_clock_values[1] > 12, inverter_clock_values[2] > 31:
-            logging.error(f"Inverter clock values seem incorrect. Skipping. f{inverter_clock_values}")
+        if inverter_clock_values[0] < 10 or inverter_clock_values[0] > 100 or inverter_clock_values[1] > 12 or inverter_clock_values[2] > 31:
+            logging.error(f"Inverter clock values seem incorrect. Skipping. {inverter_clock_values}")
             return
 
         # The inverter stores the year in a two digit form
