@@ -76,7 +76,9 @@ class Solis2Mqtt:
                     logging.error("Unknown homeassistant device type: "+entry['homeassistant']['device'])
 
     def update_clock(self):
-        if not self.cfg["inverter"]["clock_register"]:
+        clock_register = int(self.cfg["inverter"].get("clock_register", -1))
+
+        if clock_register < 0:
             logging.debug("No clock register config")
             return
 
@@ -85,7 +87,6 @@ class Solis2Mqtt:
             logging.debug("Recent clock update")
             return
 
-        clock_register =int(self.cfg["inverter"]["clock_register"])
         logging.debug(f"Reading clock registers from {clock_register}")
         inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
         inverter_clock = datetime.DateTime.new(*inverter_clock_values)
