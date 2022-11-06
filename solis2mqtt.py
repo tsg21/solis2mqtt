@@ -76,11 +76,12 @@ class Solis2Mqtt:
                     logging.error("Unknown homeassistant device type: "+entry['homeassistant']['device'])
 
     def update_clock(self):
-        clock_register = int(self.cfg["inverter"].get("clock_register", -1))
-
-        if clock_register < 0:
+        clock_register_str = self.cfg["inverter"].get("clock_register")
+        if clock_register_str is None:
             logging.debug("No clock register config")
             return
+
+        clock_register = int(clock_register_str)
 
         # Only perform clock checks updates hourly
         if self.last_clock_update and (datetime.now() - self.last_clock_update).total_seconds() < 60*60:
