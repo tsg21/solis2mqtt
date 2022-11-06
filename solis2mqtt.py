@@ -90,6 +90,11 @@ class Solis2Mqtt:
 
         logging.debug(f"Reading clock registers from {clock_register}")
         inverter_clock_values = self.inverter.read_registers(registeraddress=clock_register, number_of_registers=6, functioncode=3)
+
+        if inverter_clock_values[0] < 1900 or inverter_clock_values[0] > 2100:
+            logging.error(f"Inverter clock values seem incorrect. Skipping. f{inverter_clock_values}")
+            return
+
         inverter_clock = datetime.DateTime.new(*inverter_clock_values)
 
         now = datetime.now()
