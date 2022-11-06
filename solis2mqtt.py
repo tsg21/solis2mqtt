@@ -98,7 +98,7 @@ class Solis2Mqtt:
         # The inverter stores the year in a two digit form
         inverter_clock_values[0] = inverter_clock_values[0] + 2000
 
-        inverter_clock = datetime.DateTime.new(*inverter_clock_values)
+        inverter_clock = datetime(*inverter_clock_values)
 
         now = datetime.now()
         delta_seconds = (now - inverter_clock).total_seconds()
