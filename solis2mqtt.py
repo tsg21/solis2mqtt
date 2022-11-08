@@ -207,7 +207,7 @@ class Solis2Mqtt:
                     continue
                 else:
                     self.inverter_offline = False
-                    logging.info(f"Read {entry['description']} - {value}{entry['unit'] if entry['unit'] else ''}")
+                    logging.info(f"Read {entry['description']} - {value}{entry.get('unit', '')}")
 
                 # Check whether the change in value is valid
                 delta_limit = entry.get('filter', {}).get('delta_limit')
