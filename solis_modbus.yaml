@@ -149,7 +149,7 @@
     state_class: measurement
     device_class:
 - name: inverter_enabled
-  description: Inverter Enabled Switch
+  description: Inverter Enabled
   active: true
   modbus:
     register: 43007
