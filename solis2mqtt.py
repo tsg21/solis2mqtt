@@ -142,10 +142,13 @@ class Solis2Mqtt:
         return f"20{year:02d}-{month:02d}-{day:02d}T{hour:02d}:{minute:02d}:{second:02d}"
 
     def on_mqtt_message(self, client, userdata, msg):
+        entry = None
         for el in self.register_cfg:
             if el['name'] == msg.topic.split('/')[-2]:
-                register_cfg = el['modbus']
+                entry = el
                 break
+
+        register_cfg = entry['modbus']
 
         str_value = msg.payload.decode('utf-8')
         if 'number_of_decimals' in register_cfg and register_cfg['number_of_decimals'] > 0:
@@ -154,7 +157,7 @@ class Solis2Mqtt:
             value = int(str_value)
 
         with self.inverter_lock:
-            logging.info(f"Writing {value} to register {register_cfg['register']}")
+            logging.info(f"Writing {value} to register {register_cfg['register']} for {entry['name']}")
             try:
                 self.inverter.write_register(register_cfg['register'],
                                              value,
@@ -165,6 +168,9 @@ class Solis2Mqtt:
                 if not self.inverter_offline:
                     logging.exception(f"Error while writing message to inverter. Topic: '{msg.topic}, "
                                       f"Value: '{str_value}', Register: '{register_cfg['register']}'.")
+
+        # Publish the new value as the new state
+        self.mqtt.publish(f"{self.cfg['inverter']['name']}/{entry['name']}", value, retain=True)
 
     def main(self):
         self.generate_ha_discovery_topics()
