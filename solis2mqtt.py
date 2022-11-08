@@ -152,7 +152,9 @@ class Solis2Mqtt:
             value = float(str_value)
         else:
             value = int(str_value)
+
         with self.inverter_lock:
+            logging.info(f"Writing {value} to register {register_cfg['register']}")
             try:
                 self.inverter.write_register(register_cfg['register'],
                                              value,

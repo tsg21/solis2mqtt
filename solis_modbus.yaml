@@ -148,4 +148,19 @@
     device: sensor
     state_class: measurement
     device_class:
-
+- name: inverter_enabled
+  description: Inverter Enabled Switch
+  active: true
+  modbus:
+    register: 43007
+    read_type: register
+    function_code: 3
+    number_of_decimals: 0
+    write_function_code: 6
+    signed: false
+  homeassistant:
+    device: switch
+    state_class: measurement
+    device_class: switch
+    payload_on: 190
+    payload_off: 222
