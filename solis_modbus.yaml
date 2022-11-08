@@ -8,6 +8,8 @@
     function_code: 4
     number_of_decimals: 0
     signed: false
+  filter:
+    delta_limit: 3
   homeassistant:
     device: sensor
     state_class: measurement
@@ -22,6 +24,8 @@
     function_code: 4
     number_of_decimals: 0
     signed: false
+  filter:
+    delta_limit: 3
   homeassistant:
     device: sensor
     state_class: measurement
@@ -36,6 +40,8 @@
     function_code: 4
     number_of_decimals: 1
     signed: false
+  filter:
+    delta_limit: 10
   homeassistant:
     device: sensor
     state_class: measurement
@@ -50,6 +56,8 @@
     function_code: 4
     number_of_decimals: 1
     signed: true
+  filter:
+    delta_limit: 20
   homeassistant:
     device: sensor
     state_class: measurement
@@ -106,6 +114,8 @@
     function_code: 4
     number_of_decimals: 1
     signed: false
+  filter:
+    delta_limit: 5
   homeassistant:
     device: sensor
     state_class: measurement
@@ -139,15 +149,3 @@
     state_class: measurement
     device_class:
 
-# - name: grid_status
-#   description: Grid Status
-#   unit:
-#   active: true
-#   modbus:
-#     register: 12590
-#     read_type: register
-#     function_code: 2
-#   homeassistant:
-#     device: sensor
-#     state_class: measurement
-#     device_class: power

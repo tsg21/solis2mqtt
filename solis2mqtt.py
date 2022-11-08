@@ -26,6 +26,7 @@ class Solis2Mqtt:
         self.inverter_offline = False
         self.mqtt = Mqtt(self.cfg['inverter']['name'], self.cfg['mqtt'])
         self.last_clock_update = None
+        self.last_valid_values = {}
 
     def load_register_cfg(self, register_data_file='solis_modbus.yaml'):
         with open(register_data_file) as smfile:
@@ -201,14 +202,19 @@ class Solis2Mqtt:
                         logging.info("Inverter not reachable")
                         self.inverter_offline = True
 
-                    if 'homeassistant' in entry and entry['homeassistant']['state_class'] == "measurement":
-                        value = 0
-                    else:
-                        continue
+                    continue
                 else:
                     self.inverter_offline = False
                     logging.info(f"Read {entry['description']} - {value}{entry['unit'] if entry['unit'] else ''}")
 
+                # Check whether the change in value is valid
+                delta_limit = entry.get('filter', {}).get('delta_limit')
+                last_valid_value = self.last_valid_values.get(entry['name'])
+                if delta_limit and last_valid_value and abs(value-last_valid_value) > delta_limit:
+                    logging.info(f"Skipping invalid value {value} (last valid {last_valid_value})")
+                    continue
+
+                self.last_valid_values[entry['name']] = value
                 self.mqtt.publish(f"{self.cfg['inverter']['name']}/{entry['name']}", value, retain=True)
 
             # wait with next poll configured interval, or if inverter is not responding ten times the interval
