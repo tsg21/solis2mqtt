@@ -54,12 +54,12 @@
     device: sensor
     state_class: measurement
     device_class: current
-- name: inverter_generation_today
-  description: Inverter Generation Today
+- name: battery_charge_today
+  description: Battery charge today
   unit: kWh
   active: true
   modbus:
-    register: 33035
+    register: 33163
     read_type: register
     function_code: 4
     number_of_decimals: 1
@@ -68,12 +68,12 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
-- name: battery_charge_today
-  description: Battery charge today
+- name: battery_discharge_today
+  description: Battery discharge today
   unit: kWh
   active: true
   modbus:
-    register: 33163
+    register: 33167
     read_type: register
     function_code: 4
     number_of_decimals: 1
@@ -110,6 +110,35 @@
     device: sensor
     state_class: measurement
     device_class: temperature
+- name: battery_failure_info_1
+  description: Battery Failure Info 1
+  unit:
+  active: true
+  modbus:
+    register: 33145
+    read_type: register
+    function_code: 4
+    number_of_decimals: 0
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class:
+- name: battery_failure_info_2
+  description: Battery Failure Info 2
+  unit:
+  active: true
+  modbus:
+    register: 33146
+    read_type: register
+    function_code: 4
+    number_of_decimals: 0
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class:
+
 # - name: grid_status
 #   description: Grid Status
 #   unit:
