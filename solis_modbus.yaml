@@ -122,7 +122,6 @@
     device_class: temperature
 - name: battery_failure_info_1
   description: Battery Failure Info 1
-  unit:
   active: true
   modbus:
     register: 33145
@@ -136,7 +135,6 @@
     device_class:
 - name: battery_failure_info_2
   description: Battery Failure Info 2
-  unit:
   active: true
   modbus:
     register: 33146

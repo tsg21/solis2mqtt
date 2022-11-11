@@ -27,7 +27,8 @@ class DiscoverMsgSensor():
         self.discover_msg["unique_id"] =  device_name + "/" +id
         self.discover_msg["device_class"] = device_class
         self.discover_msg["state_class"] = state_class
-        self.discover_msg["unit_of_measurement"] = unit
+        if unit:
+            self.discover_msg["unit_of_measurement"] = unit
         self.discover_msg["device"]["name"] = device_name
         self.discover_msg["device"]["model"] = device_model
         self.discover_msg["device"]["manufacturer"] = device_manufacturer

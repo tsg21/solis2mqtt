@@ -40,7 +40,7 @@ class Solis2Mqtt:
                     self.mqtt.publish(f"homeassistant/sensor/{self.cfg['inverter']['name']}/{entry['name']}/config",
                                       str(DiscoverMsgSensor(entry['description'],
                                                             entry['name'],
-                                                            entry['unit'],
+                                                            entry.get('unit'),
                                                             entry['homeassistant']['device_class'],
                                                             entry['homeassistant']['state_class'],
                                                             self.cfg['inverter']['name'],
@@ -142,6 +142,7 @@ class Solis2Mqtt:
         return f"20{year:02d}-{month:02d}-{day:02d}T{hour:02d}:{minute:02d}:{second:02d}"
 
     def on_mqtt_message(self, client, userdata, msg):
+        logging.info(f"Received MQTT message: {msg}")
         entry = None
         for el in self.register_cfg:
             if el['name'] == msg.topic.split('/')[-2]:
