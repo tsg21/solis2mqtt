@@ -35,9 +35,12 @@ class Solis2Mqtt:
     def generate_ha_discovery_topics(self):
         for entry in self.register_cfg:
             if entry['active'] and 'homeassistant' in entry:
-                if entry['homeassistant']['device'] == 'sensor':
-                    logging.info("Generating discovery topic for sensor: "+entry['name'])
-                    self.mqtt.publish(f"homeassistant/sensor/{self.cfg['inverter']['name']}/{entry['name']}/config",
+                topic = f"homeassistant/{entry['homeassistant']['device']}/{self.cfg['inverter']['name']}/{entry['name']}/config"
+
+                logging.info(f"Generating discovery topic for {entry['name']}: {topic}")
+
+                if entry['homeassistant']['device'] == 'sensor':                    
+                    self.mqtt.publish(topic,
                                       str(DiscoverMsgSensor(entry['description'],
                                                             entry['name'],
                                                             entry.get('unit'),
@@ -49,8 +52,7 @@ class Solis2Mqtt:
                                                             VERSION)),
                                       retain=True)
                 elif entry['homeassistant']['device'] == 'number':
-                    logging.info("Generating discovery topic for number: " + entry['name'])
-                    self.mqtt.publish(f"homeassistant/number/{self.cfg['inverter']['name']}/{entry['name']}/config",
+                    self.mqtt.publish(topic,
                                       str(DiscoverMsgNumber(entry['description'],
                                                             entry['name'],
                                                             entry['homeassistant']['min'],
@@ -62,8 +64,7 @@ class Solis2Mqtt:
                                                             VERSION)),
                                       retain=True)
                 elif entry['homeassistant']['device'] == "switch":
-                    logging.info("Generating discovery topic for switch: " + entry['name'])
-                    self.mqtt.publish(f"homeassistant/switch/{self.cfg['inverter']['name']}/{entry['name']}/config",
+                    self.mqtt.publish(topic,
                                       str(DiscoverMsgSwitch(entry['description'],
                                                             entry['name'],
                                                             entry['homeassistant']['payload_on'],
