@@ -162,3 +162,59 @@
     device_class: switch
     payload_on: 190
     payload_off: 222
+- name: bms_battery_voltage
+  description: BMS Battery Voltage
+  unit: V
+  active: true
+  modbus:
+    register: 33141
+    read_type: register
+    function_code: 4
+    number_of_decimals: 2
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: voltage
+- name: bms_battery_current
+  description: BMS Battery Current
+  unit: A
+  active: true
+  modbus:
+    register: 33142
+    read_type: register
+    function_code: 4
+    number_of_decimals: 2
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+- name: bms_battery_charge_current_limit
+  description: BMS Battery Charge Current Limit
+  unit: A
+  active: true
+  modbus:
+    register: 33143
+    read_type: register
+    function_code: 4
+    number_of_decimals: 1
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+- name: bms_battery_charge_discurrent_limit
+  description: BMS Battery DisCharge Current Limit
+  unit: A
+  active: true
+  modbus:
+    register: 33144
+    read_type: register
+    function_code: 4
+    number_of_decimals: 1
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
