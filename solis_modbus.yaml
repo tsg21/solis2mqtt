@@ -205,7 +205,7 @@
     state_class: measurement
     device_class: current
 - name: bms_battery_charge_discurrent_limit
-  description: BMS Battery DisCharge Current Limit
+  description: BMS Battery Discharge Current Limit
   unit: A
   active: true
   modbus:
