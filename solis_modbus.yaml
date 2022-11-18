@@ -9,7 +9,7 @@
     number_of_decimals: 0
     signed: false
   filter:
-    delta_limit: 3
+    delta_limit: 10
   homeassistant:
     device: sensor
     state_class: measurement
@@ -25,7 +25,7 @@
     number_of_decimals: 0
     signed: false
   filter:
-    delta_limit: 3
+    delta_limit: 10
   homeassistant:
     device: sensor
     state_class: measurement
@@ -115,7 +115,7 @@
     number_of_decimals: 1
     signed: false
   filter:
-    delta_limit: 5
+    delta_limit: 10
   homeassistant:
     device: sensor
     state_class: measurement
