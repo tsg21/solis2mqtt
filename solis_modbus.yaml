@@ -219,3 +219,49 @@
     device: sensor
     state_class: measurement
     device_class: current
+# - name: inverter_charged_timed_charge_current
+#   description: Timed Charge Current
+#   unit: A
+#   active: true
+#   modbus:
+#     register: 43141
+#     read_type: register
+#     function_code: 3
+#     number_of_decimals: 1
+#     write_function_code: 6
+#     signed: false
+#   homeassistant:
+#     device: number
+#     min: 0
+#     max: 70
+#     step: 0.1
+# - name: inverter_charged_timed_discharge_current
+#   description: Timed Discharge Current
+#   unit: A
+#   active: true
+#   modbus:
+#     register: 43142
+#     read_type: register
+#     function_code: 3
+#     number_of_decimals: 1
+#     write_function_code: 6
+#     signed: false
+#   homeassistant:
+#     device: number
+#     min: 0
+#     max: 70
+#     step: 0.1
+- name: inverter_status
+  description: Inverter Status
+  active: true
+  modbus:
+    register: 33095
+    read_type: register
+    function_code: 4
+    number_of_decimals: 0
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class:
+
