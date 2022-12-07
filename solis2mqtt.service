@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 PIDFile=/run/solis2mqtt/pid
-User=solis2mqtt
-Group=solis2mqtt
-WorkingDirectory=/home/pi/solis2mqtt
+User=pi
+Group=pi
+WorkingDirectory=/opt/solis2mqtt
 ExecStart=python3 solis2mqtt.py -d
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID

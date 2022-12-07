@@ -2,4 +2,4 @@ config.yaml
 venv
 __pycache__
 data
-solis2mqtt.log
+log/*
