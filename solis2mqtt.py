@@ -218,11 +218,19 @@ class Solis2Mqtt:
                     logging.info(f"Read {entry['description']} - {value}{entry.get('unit', '')}")
 
                 # Check whether the change in value is valid
-                delta_limit = entry.get('filter', {}).get('delta_limit')
+                filter = entry.get('filter', {})
+                delta_limit = filter.get('delta_limit')
                 last_valid_value = self.last_valid_values.get(entry['name'])
+
                 if delta_limit and last_valid_value and abs(value-last_valid_value) > delta_limit:
-                    logging.info(f"Skipping invalid value {value} (last valid {last_valid_value})")
-                    continue
+                    except_at_midnight = filter.get('except_at_midnight', 'false')
+                    now = datetime.now()
+                    is_about_midnight = now.hour == 0 and now.minute < 3
+                    if except_at_midnight == 'true' and is_about_midnight:
+                        logging.info(f"Allowing filtered value {value} because it is midnight (last valid {last_valid_value})")
+                    else:
+                        logging.info(f"Skipping invalid value {value} (last valid {last_valid_value})")
+                        continue
 
                 self.last_valid_values[entry['name']] = value
                 self.mqtt.publish(f"{self.cfg['inverter']['name']}/{entry['name']}", value, retain=True)
