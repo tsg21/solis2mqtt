@@ -270,4 +270,50 @@
     device: sensor
     state_class: measurement
     device_class:
+- name: grid_power
+  description: Grid Power
+  unit: W
+  active: true
+  modbus:
+    register: 33130
+    read_type: long
+    function_code: 4
+    number_of_decimals: 0
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: power
+- name: grid_import
+  description: Grid import
+  unit: kWh
+  active: true
+  modbus:
+    register: 33169
+    read_type: long
+    function_code: 4
+    number_of_decimals: 1
+    signed: false
+  filter:
+    delta_limit: 0.3
+  homeassistant:
+    device: sensor
+    state_class: total
+    device_class: energy
+- name: grid_export
+  description: Grid export
+  unit: kWh
+  active: true
+  modbus:
+    register: 33173
+    read_type: long
+    function_code: 4
+    number_of_decimals: 1
+    signed: false
+  filter:
+    delta_limit: 0.3
+  homeassistant:
+    device: sensor
+    state_class: total
+    device_class: energy
 
