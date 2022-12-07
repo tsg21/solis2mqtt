@@ -166,6 +166,8 @@
   description: BMS Battery Voltage
   unit: V
   active: true
+  filter:
+    delta_limit: 5
   modbus:
     register: 33141
     read_type: register
