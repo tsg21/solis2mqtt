@@ -192,7 +192,7 @@ class Solis2Mqtt:
                 if skip_reads > 0:
                     already_skipped_reads = self.skipped_reads.get(entry['name'], 0)
                     logging.info(f"{entry['name']} skip_reads={skip_reads}, already_skipped_reads={already_skipped_reads}")
-                    if already_skipped_reads >= skip_reads:
+                    if already_skipped_reads < skip_reads:
                         logging.info(f"skip {entry['name']}")
                         continue # skip!
                     else:
