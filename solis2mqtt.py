@@ -27,6 +27,7 @@ class Solis2Mqtt:
         self.mqtt = Mqtt(self.cfg['inverter']['name'], self.cfg['mqtt'])
         self.last_clock_update = None
         self.last_valid_values = {}
+        self.skipped_reads = {}
 
     def load_register_cfg(self, register_data_file='solis_modbus.yaml'):
         with open(register_data_file) as smfile:
@@ -186,6 +187,15 @@ class Solis2Mqtt:
                 if not entry['active'] or 'function_code' not in entry['modbus'] :
                     continue
 
+                skip_reads = entry.get('skip_reads', 0)
+
+                if skip_reads > 0:
+                    already_skipped_reads = self.skipped_reads.get(entry['name'], 0)
+                    if already_skipped_reads >= skip_reads:
+                        continue # skip!
+                    else:
+                        self.skipped_reads[entry['name']] = already_skipped_reads + 1
+
                 try:
                     if entry['modbus']['read_type'] == "register":
                         with self.inverter_lock:
@@ -223,10 +233,10 @@ class Solis2Mqtt:
                 last_valid_value = self.last_valid_values.get(entry['name'])
 
                 if delta_limit and last_valid_value and abs(value-last_valid_value) > delta_limit:
-                    except_at_midnight = filter.get('except_at_midnight', 'false')
+                    except_at_midnight = filter.get('except_at_midnight', False)
                     now = datetime.now()
                     is_about_midnight = now.hour == 0 and now.minute < 3
-                    if except_at_midnight == 'true' and is_about_midnight:
+                    if except_at_midnight and is_about_midnight:
                         logging.info(f"Allowing filtered value {value} because it is midnight (last valid {last_valid_value})")
                     else:
                         logging.info(f"Skipping invalid value {value} (last valid {last_valid_value})")

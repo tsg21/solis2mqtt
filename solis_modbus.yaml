@@ -1,5 +1,6 @@
 - name: battery_soc
   description: Battery State of Charge
+  skip_reads : 1
   unit: '%'
   active: true
   modbus:
@@ -16,6 +17,7 @@
     device_class: battery
 - name: battery_soh
   description: Battery State of Health
+  skip_reads : 10
   unit: '%'
   active: true
   modbus:
@@ -32,6 +34,7 @@
     device_class: battery
 - name: battery_voltage
   description: Battery Voltage
+  skip_reads : 2
   unit: V
   active: true
   modbus:
@@ -62,6 +65,7 @@
     device_class: current
 - name: battery_charge_today
   description: Battery charge today
+  skip_reads : 4
   unit: kWh
   active: true
   modbus:
@@ -79,6 +83,7 @@
     device_class: energy
 - name: battery_discharge_today
   description: Battery discharge today
+  skip_reads : 4
   unit: kWh
   active: true
   modbus:
@@ -110,6 +115,7 @@
     device_class: power
 - name: inverter_temperature
   description: Inverter Temperature
+  skip_reads : 2
   unit: "°C"
   active: true
   modbus:
@@ -126,6 +132,7 @@
     device_class: temperature
 - name: battery_failure_info_1
   description: Battery Failure Info 1
+  skip_reads : 12
   active: true
   modbus:
     register: 33145
@@ -139,6 +146,7 @@
     device_class:
 - name: battery_failure_info_2
   description: Battery Failure Info 2
+  skip_reads : 12
   active: true
   modbus:
     register: 33146
@@ -168,6 +176,7 @@
     payload_off: 222
 - name: bms_battery_voltage
   description: BMS Battery Voltage
+  skip_reads : 4
   unit: V
   active: true
   filter:
@@ -199,6 +208,7 @@
     device_class: current
 - name: bms_battery_charge_current_limit
   description: BMS Battery Charge Current Limit
+  skip_reads : 8
   unit: A
   active: true
   modbus:
@@ -213,6 +223,7 @@
     device_class: current
 - name: bms_battery_charge_discurrent_limit
   description: BMS Battery Discharge Current Limit
+  skip_reads : 8
   unit: A
   active: true
   modbus:
@@ -227,6 +238,7 @@
     device_class: current
 - name: timed_charge_current
   description: Timed Charge Current
+  skip_reads : 8
   unit: A
   active: true
   modbus:
@@ -259,6 +271,7 @@
 #     step: 0.1
 - name: inverter_status
   description: Inverter Status
+  skip_reads : 2
   active: true
   modbus:
     register: 33095
@@ -286,6 +299,7 @@
     device_class: power
 - name: grid_import
   description: Grid import
+  skip_reads : 4
   unit: kWh
   active: true
   modbus:
@@ -302,6 +316,7 @@
     device_class: energy
 - name: grid_export
   description: Grid export
+  skip_reads : 4
   unit: kWh
   active: true
   modbus:
