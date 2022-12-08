@@ -194,9 +194,10 @@ class Solis2Mqtt:
                     logging.info(f"{entry['name']} skip_reads={skip_reads}, already_skipped_reads={already_skipped_reads}")
                     if already_skipped_reads < skip_reads:
                         logging.info(f"skip {entry['name']}")
+                        self.skipped_reads[entry['name']] = already_skipped_reads + 1
                         continue # skip!
                     else:
-                        self.skipped_reads[entry['name']] = already_skipped_reads + 1
+                        self.skipped_reads[entry['name']] = 0
 
                 try:
                     if entry['modbus']['read_type'] == "register":
