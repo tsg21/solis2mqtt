@@ -199,7 +199,7 @@ class Solis2Mqtt:
                         with self.inverter_lock:
                             value = self.inverter.read_long(entry['modbus']['register'],
                                                             functioncode=entry['modbus']['function_code'],
-                                                            signed=entry['modbus']['signed']) / 10 ^ int(entry['modbus']['number_of_decimals'])
+                                                            signed=entry['modbus']['signed']) / 10 ** int(entry['modbus']['number_of_decimals'])
                     elif entry['modbus']['read_type'] == "composed_datetime":
                         with self.inverter_lock:
                             value = self.read_composed_date(entry['modbus']['register'],
