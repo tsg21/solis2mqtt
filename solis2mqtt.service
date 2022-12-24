@@ -11,6 +11,8 @@ ExecStart=python3 solis2mqtt.py -d
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
+Restart=on-failure
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
